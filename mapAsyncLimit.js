@@ -23,6 +23,34 @@ const results = await mapAsyncLimit(
 console.log(results); // ['FOO', 'BAR', 'QUX', 'QUZ'];
 */
 
+/*
+/**
+ * @param {Array<any>} iterable
+ * @param {Function} callbackFn
+ * @param {number} size
+ *
+ * @return {Promise}
+ */
+export default async function mapAsyncLimit(iterable, callbackFn, size) {
+    size = size || iterable.length;
+    const results = new Array(iterable.length);
+
+    if (iterable.length === 0) {
+        return results;
+    }
+
+    for (let i=0; i < iterable.length; i+=size){
+        let iterableSlice = iterable.slice(i, i+size);
+        
+        await Promise.all(iterableSlice.map((val, index) => {
+            return callbackFn(val).then((val) => { results[i + index] = val});
+        }));
+    }
+
+    return results;
+}
+*/
+
 /**
  * @param {Array<any>} iterable
  * @param {Function} callbackFn
@@ -47,4 +75,3 @@ export default async function mapAsyncLimit(iterable, callbackFn, size) {
     }
     return results;
 }
-    
