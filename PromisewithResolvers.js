@@ -60,6 +60,9 @@ export default function promiseWithResolvers() {
   function resolve (...args) {resolve(...args)};
   function reject (...args) {reject(...args)};
   const promise = new Promise((res, rej) => {
+      // resolve and reject are undefined at this point!
+      // the only way to (resolve/ reject) this promise is with res/ rej, so we need to make a copy of those references
+      
       resolve = res;
       reject = rej;
   });
