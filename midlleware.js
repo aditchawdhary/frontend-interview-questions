@@ -57,3 +57,25 @@ export default function middlewares(...fns) {
     await execute(0);
   }
 }
+
+/*
+/**
+ * @param {...Function} fns
+ * @returns {Function}
+ */
+export default function middlewares(...fns) {
+  return function call(context = {}) {
+    let startIndex = 0;
+
+    function dispatch(index) {
+        if (index === fns.length) {
+          return Promise.resolve();
+        }
+        let fn = fns[index];
+        return Promise.resolve(fn(context, () => dispatch(index+1)));
+    }
+    
+    return dispatch(startIndex);
+  }
+}
+*/
