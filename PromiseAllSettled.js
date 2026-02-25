@@ -60,3 +60,37 @@ export default function promiseAllSettled(iterable) {
       });
   })
 }
+
+
+/*
+/**
+ * @param {Array} iterable
+ * @return {Promise<Array<{status: 'fulfilled', value: *}|{status: 'rejected', reason: *}>>}
+ */
+export default function promiseAllSettled(iterable) {
+  let length = iterable.length;
+
+  if(length == 0) {
+    return Promise.resolve([]);
+  }
+
+  let results = new Array(length);
+  let settled = 0;
+  return new Promise((resolve, reject) => {
+    function implement(val, index) {
+        Promise.resolve(val).then(
+          (current) => {results[index] = {"status": "fulfilled", "value": current};}
+        ).catch(err => {
+            results[index] = {"status": "rejected", "reason": err};
+        }).finally(() => {
+            settled++;
+            if (settled == length) {
+              resolve(results);
+            }
+        }) 
+    }
+    iterable.forEach(implement); 
+  });
+}
+
+*/
